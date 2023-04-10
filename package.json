@@ -1,0 +1,17 @@
+{
+  "name": "jwt_authentication_and_session",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-certificates": "node generate-certificates.mjs",
+    "start": "conc \"cd server && node --watch server.mjs\" \"cd client && npm run serve\""
+  },
+  "author": "Marco Rensch",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^8.0.1",
+    "mkcert": "^1.5.1"
+  }
+}
