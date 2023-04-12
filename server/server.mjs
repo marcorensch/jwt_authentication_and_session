@@ -33,6 +33,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.use(cookieParser());
+
+const items = [{name:'Obi Wan Kenobi', rank:'Master'}, {name:'Mace Windu', rank:'Master'}, {name:'Anakin Skywalker', rank:'Padawan'}]
+
 app.get('/', (req, res) => {
     res.send('Hello there! This isn\'t the page you\'re looking for. ⭐🧔⚔️');
 });
@@ -45,6 +49,20 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/logout', (req, res) => {
     res.status(202).clearCookie('nxd-token').send('cookie cleared')
+});
+
+app.get('/api/items', (req, res) => {
+    const token = req.cookies['nxd-token'];
+    if(!token) {
+        res.status(401).send('No token provided');
+        return;
+    }
+    try {
+        const decoded = jsonwebtoken.verify(token, jwtSecret);
+        res.json({items, decoded});
+    } catch(err) {
+        res.status(401).send('Invalid token');
+    }
 });
 
 const keyPath = path.join(__dirname, '..', 'certs', 'localhost-key.pem');
